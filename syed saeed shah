@@ -1,0 +1,48 @@
+import java.util.ArrayList;
+
+public class Hotel {
+    private String name;
+    private ArrayList<Room> rooms;
+    private ArrayList<Reservation> reservations;
+
+    public Hotel(String name) {
+        this.name = name;
+        rooms = new ArrayList<>();
+        reservations = new ArrayList<>();
+    }
+
+    public void addRoom(Room room) {
+        rooms.add(room);
+    }
+
+    public void listRooms() {
+        for (Room room : rooms) {
+            System.out.println(room);
+        }
+    }
+
+    public Room findAvailableRoom(String type) {
+        for (Room room : rooms) {
+            if (room.getType().equalsIgnoreCase(type) && room.isAvailable()) {
+                return room;
+            }
+        }
+        return null;
+    }
+
+    public void bookRoom(Guest guest, String roomType, String checkIn, String checkOut) {
+        Room room = findAvailableRoom(roomType);
+
+        if (room == null) {
+            System.out.println("No available " + roomType + " room.");
+            return;
+        }
+
+        room.setAvailable(false);
+        Reservation reservation = new Reservation(guest, room, checkIn, checkOut);
+        reservations.add(reservation);
+
+        System.out.println("Room booked successfully!");
+        System.out.println(reservation);
+    }
+}
