@@ -1,6 +1,80 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
-public class Hotel {
+// Room Class
+class Room {
+    private int number;
+    private String type;
+    private double price;
+    private boolean available;
+
+    public Room(int number, String type, double price) {
+        this.number = number;
+        this.type = type;
+        this.price = price;
+        this.available = true;
+    }
+
+    public int getNumber() { return number; }
+    public String getType() { return type; }
+    public double getPrice() { return price; }
+    public boolean isAvailable() { return available; }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    @Override
+    public String toString() {
+        return "Room " + number + " (" + type + ") Rs." + price +
+               " | Available: " + available;
+    }
+}
+
+
+// Guest Class
+class Guest {
+    private String name;
+    private String phone;
+
+    public Guest(String name, String phone) {
+        this.name = name;
+        this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return "Guest: " + name + " | Phone: " + phone;
+    }
+}
+
+
+// Reservation Class
+class Reservation {
+    private Guest guest;
+    private Room room;
+    private String checkIn;
+    private String checkOut;
+
+    public Reservation(Guest guest, Room room, String checkIn, String checkOut) {
+        this.guest = guest;
+        this.room = room;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+    }
+
+    @Override
+    public String toString() {
+        return "\nReservation Details:\n" +
+                guest + "\nRoom: " + room.getNumber() +
+                "\nCheck-in: " + checkIn +
+                "\nCheck-out: " + checkOut;
+    }
+}
+
+
+// Hotel Class
+class Hotel {
     private String name;
     private ArrayList<Room> rooms;
     private ArrayList<Reservation> reservations;
@@ -42,7 +116,51 @@ public class Hotel {
         Reservation reservation = new Reservation(guest, room, checkIn, checkOut);
         reservations.add(reservation);
 
-        System.out.println("Room booked successfully!");
+        System.out.println("\nRoom booked successfully!");
         System.out.println(reservation);
+    }
+}
+
+
+// Main Class (User Input)
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        Hotel hotel = new Hotel("City Palace Hotel");
+
+        // Default rooms
+        hotel.addRoom(new Room(101, "Single", 3000));
+        hotel.addRoom(new Room(102, "Double", 5000));
+        hotel.addRoom(new Room(201, "Suite", 10000));
+
+        System.out.println("Welcome to " + "City Palace Hotel");
+
+        System.out.println("\nAvailable Rooms:");
+        hotel.listRooms();
+
+        // User Input Guest Data
+        System.out.print("\nEnter Guest Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Phone Number: ");
+        String phone = sc.nextLine();
+
+        Guest guest = new Guest(name, phone);
+
+        // Booking Details
+        System.out.print("\nEnter Room Type (Single/Double/Suite): ");
+        String roomType = sc.nextLine();
+
+        System.out.print("Enter Check-in Date: ");
+        String checkIn = sc.nextLine();
+
+        System.out.print("Enter Check-out Date: ");
+        String checkOut = sc.nextLine();
+
+        hotel.bookRoom(guest, roomType, checkIn, checkOut);
+
+        System.out.println("\nRooms After Booking:");
+        hotel.listRooms();
     }
 }
